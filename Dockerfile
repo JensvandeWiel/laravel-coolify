@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     git \
+    curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql mysqli
 
@@ -18,6 +19,10 @@ RUN pecl install redis \
 
 # Enable mod_rewrite for Apache
 RUN a2enmod rewrite
+
+# Install Node.js and npm
+RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
+    && apt-get install -y nodejs
 
 COPY ./apache.conf /etc/apache2/sites-available/000-default.conf
 
@@ -30,6 +35,10 @@ COPY --chown=www-data:www-data . .
 # Install Composer dependencies
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer install --no-dev --optimize-autoloader
+
+# Install npm dependencies and run build
+RUN npm install \
+    && npm run build
 
 # Expose port 80
 EXPOSE 80
