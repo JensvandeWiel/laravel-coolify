@@ -7,8 +7,6 @@ services:
     restart: unless-stopped
     volumes:
       - laravel_storage:/var/www/html/storage
-    ports:
-      - "80:80"
     depends_on:
       - mysql
       - redis
