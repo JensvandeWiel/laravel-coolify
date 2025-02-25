@@ -21,7 +21,7 @@ RUN pecl install redis \
 RUN a2enmod rewrite
 
 # Install Node.js and npm
-RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
 COPY ./apache.conf /etc/apache2/sites-available/000-default.conf
