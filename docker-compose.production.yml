@@ -12,8 +12,9 @@ services:
       - redis
     environment:
       # Application Environment
-      APP_ENV: local
-      APP_DEBUG: "true"
+      APP_URL: https://lwgock8o4ogg4ok8w4c4gcwk.coolify.alpacapanel.eu/
+      APP_ENV: production
+      APP_DEBUG: "false"
       APP_KEY: base64:lL3d8m9fSls1dCiHuc/V11JBn+PDK6lSUpTEWoHwH4w=
 
       # Database Configuration
