@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: app
+    restart: unless-stopped
+    volumes:
+      - laravel_storage:/var/www/html/storage
+    ports:
+      - "80:80"
+    depends_on:
+      - mysql
+      - redis
+    environment:
+      # Application Environment
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_KEY: base64:lL3d8m9fSls1dCiHuc/V11JBn+PDK6lSUpTEWoHwH4w=
+
+      # Database Configuration
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      DB_DATABASE: laravel
+      DB_USERNAME: laraveluser
+      DB_PASSWORD: laravelpass
+
+      # Cache and Session (Redis)
+      CACHE_DRIVER: redis
+      SESSION_DRIVER: redis
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+
+  mysql:
+    image: mysql:8.0
+    container_name: laravel_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: laraveluser
+      MYSQL_PASSWORD: laravelpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis:latest
+    container_name: laravel_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+volumes:
+  mysql_data:
+  laravel_storage:
